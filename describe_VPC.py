@@ -5,48 +5,48 @@ import boto3
 from botocore.exceptions import ClientError
 import json
 
-AWS_REGION = input("Please enter the AWS_REGION")
+REGION = input("Please enter the REGION")
 
-# this is the configration for the logger
+# this is the configration for the logger_for
 
-logger = logging.getLogger()
+logger_for = logging.getlogger_for()
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s: %(levelname)s: %(message)s')
 
-vpc_client = boto3.client("ec2", region_name=AWS_REGION)
+response = boto3.client("ec2", region_name=REGION)
 
 
-def describe_vpcs(tag, tag_values, max_items):
+def describe(tag, tag_values, max_items):
 
     try:
-        paginator = vpc_client.get_paginator('describe_vpcs')
+        pag = response.get_paginator('describe_vpcs')
 
-        response_iterator = paginator.paginate(
+        response_iterator = pag.paginate(
             Filters=[{
                 'Name': f'tag:{tag}',
                 'Values': tag_values
             }],
             PaginationConfig={'MaxItems': max_items})
 
-        full_result = response_iterator.build_full_result()
+        result = response_iterator.build_full_result()
 
-        vpc_list = []
+        list = []
 
-        for page in full_result['Vpcs']:
-            vpc_list.append(page)
+        for page in result['Vpcs']:
+            list.append(page)
 
     except ClientError:
-        logger.exception('This Could not describe VPCs.')
+        logger_for.exception('OOPs can not  describe your VPCs.')
         raise
     else:
-        return vpc_list
+        return list
 
 
 if __name__ == '__main__':
-    TAG = 'Techhub_VPC'
-    TAG_VALUES = ['Custom_VPC']
-    MAX_ITEMS = 10
-    vpcs = describe_vpcs(TAG, TAG_VALUES, MAX_ITEMS)
-    logger.info('Here is your VPC Details: ')
+    TAG = input("Enter the TAG NAME")
+    VALUES = input("Enter the TAG VALUE")
+    MAXIMUM_ITEMS = int(input("Enter the Value for MAX ITEMS"))
+    vpcs = describe(TAG, VALUES, MAXIMUM_ITEMS)
+    logger_for.info('Here is your VPC Details: ')
     for vpc in vpcs:
-        logger.info(json.dumps(vpc, indent=4) + '\n')
+        logger_for.info(json.dumps(vpc, indent=4) + '\n')
