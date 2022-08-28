@@ -1,3 +1,4 @@
+# By MuZakkir Saifi
 # import logging for get the logs in  execution
 import logging
 # import the boto3 which will use to interact  with the aws
@@ -9,7 +10,7 @@ REGION = input("Please enter the REGION")
 
 # this is the configration for the logger_for
 
-logger_for = logging.getlogger_for()
+logger_for = logging.getLogger()
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s: %(levelname)s: %(message)s')
 
@@ -44,7 +45,15 @@ def describe(tag, tag_values, max_items):
 
 if __name__ == '__main__':
     TAG = input("Enter the TAG NAME")
-    VALUES = input("Enter the TAG VALUE")
+#  empty list
+    VALUES = []
+    
+    # user will enter the number of elements
+    number = int(input("Enter number of elements : "))
+    for i in range(0, n):
+        elements = input("enter you value")
+    
+        VALUES.append(elements)
     MAXIMUM_ITEMS = int(input("Enter the Value for MAX ITEMS"))
     vpcs = describe(TAG, VALUES, MAXIMUM_ITEMS)
     logger_for.info('Here is your VPC Details: ')
