@@ -50,7 +50,7 @@ if __name__ == '__main__':
     
     # user will enter the number of elements
     number = int(input("Enter number of elements : "))
-    for i in range(0, n):
+    for i in range(0, number):
         elements = input("enter you value")
     
         VALUES.append(elements)
